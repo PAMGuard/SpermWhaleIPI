@@ -1,0 +1,235 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+	<link href="pamHelpStylesheet.css" rel="STYLESHEET" type="text/css" />
+	<title>Sperm Whale IPI Plugin</title>
+</head>
+<body>
+<h1>Sperm Whale IPI Plugin</h1>
+
+<h2>Overview</h2>
+
+<p>The &quot;Sperm whale IPI&nbsp;Plugin&quot;&nbsp;(AKA IPI plugin)&nbsp;is an external plugin for measuring the Inter-Pulse Interval (IPI) of the clicks of sperm whales.&nbsp;Measurement of&nbsp;IPI has been demonstrated to be&nbsp;a reliable means of estimating the&nbsp;total length of&nbsp;an individual&nbsp;sperm whale (Gordon 1991; Growcott et al 2011).&nbsp;The module employs two related signal processing methods, both based on cepstral analysis of clicks,&nbsp;to&nbsp;estimate IPI:</p>
+
+<ol>
+	<li>Method 1 computes the IPI for each click and then creates a histogram from all of these measurements. Mean and mode of these individual&nbsp;IPI&nbsp;estimates&nbsp;are then&nbsp;computed to provide an IPI estimate similar to that described by Gordon (1991 - J. Zool. Lond. Vol 224 pp 301-314).</li>
+	<li>Method 2 computes the <em>ensemble averaged cepstrum</em> from all clicks.&nbsp;The IPI is estimated from the peak value of this&nbsp;ensemble averaged signal. This method&nbsp;provides&nbsp;estimates&nbsp;of IPI&nbsp;in the&nbsp;manner described by&nbsp;Teloni et al&nbsp;(2007 - J. Cetacean Res. Manage. Vol 9(2), pp 127-136).</li>
+</ol>
+
+<p>The IPI plugin&nbsp;was first published in 2009 (Pamguard version 1.6), and was updated in May 2018 to work as an external plugin&nbsp;with modern versions of PAMGuard (&gt;=2.0.12c), and has been used in several peer reviewed publications (Growcott et al 2011, Miller et al 2013). The IPI plugin can be run in either Normal and Mixed Mode.</p>
+
+<p>If you use this module to analyse data and wish to cite the IPI plugin&nbsp;please use the following reference:</p>
+
+<p style="margin-left: 40px;">Miller, B. S., Growcott, A., Slooten, E., and Dawson, S. M. (2013). <em>Acoustically derived growth rates of sperm whales (</em>Physeter macrocephalus<em>) in Kaikoura, New Zealand</em>. J. Acoust. Soc. Am., 134, 2438&ndash;45. doi:10.1121/1.4816564.</p>
+
+<p>&nbsp;</p>
+
+<h3>Release notes</h3>
+
+<p>This 2018 update is the first real update to the PAMGuard IPI plugin in nearly 10 years. The 2018 update includes newly written documentation, and it streamlines configuration of the plugin by combining the two required modules (formerly EchoDetector &amp; IpiDemo) into a single plugin. This update also simplifies the settings, and adds proper support for saving data to the Pamguard database and binary files. The 2018 updated plugin has been tested on PAMGuard 2.0.12c.</p>
+
+<h2>Adding &amp; configuring the IPI module</h2>
+
+<p>The IPI module can be added from the PAMGuard menu via:</p>
+
+<p style="margin-left: 40px;"><em>File -&gt; Add Module -&gt;&nbsp;Sound Measurement&nbsp;-&gt; Sperm whale IPI computation</em></p>
+
+<p>After adding and configuring the IPI module, a Pamguard side-panel titled Sperm whale IPI computation should appear. Upon running Pamguard the Clicks field of this panel should show a count of the number of clicks processed. The other&nbsp;boxes display&nbsp;the mode of the IPI Histogram (IPI&nbsp;estimate from&nbsp;Method 1 above), and the peak of the ensemble averaged cepstrum (IPI estimate from Method 2 above). Estimates of IPI are all in milliseconds.</p>
+
+<p><img src="sidePanel.png" /></p>
+
+<p>&nbsp;</p>
+
+<p>The IPI module, like most&nbsp;PAMGuard modules,&nbsp;can be configured via:</p>
+
+<p style="margin-left: 40px;"><em>Settings -&gt; Sperm whale IPI computation parameters </em></p>
+
+<p style="margin-left: 40px;">&nbsp;</p>
+
+<p><img src="settings.png" /></p>
+
+<p>&nbsp;</p>
+
+<h3>IPI data source</h3>
+
+<p>The Sperm Whale IPI Module uses clicks from PAMGuard&#39;s Click Detector as input. If a Click Detector module is not already present, the IPI module will request that one is added. See the section below for&nbsp;guidance on how the Click Detector should be configured for the IPI Module.&nbsp;</p>
+
+<p>The IPI module requires that at least&nbsp;one channel&nbsp;in it&#39;s Source Panel is selected to compute IPIs.&nbsp;Multiple channels may be selected, but only&nbsp;one IPI Histogram and one Ensemble Averaged Cepstrum&nbsp;are calculated by the IPI module.&nbsp;If multiple channels are selected, then clicks from every selected channel will be used to create these IPI Histogram and Ensemble Averaged Cepstrum.</p>
+
+<p>&nbsp;</p>
+
+<h3>Duration</h3>
+
+<p>User specified&nbsp;minimum duration of the cepstrum in milliseconds.&nbsp;NB: Within the IPI module&nbsp;this value&nbsp;will be&nbsp;converted from a time measurement into the&nbsp;next&nbsp;largest&nbsp;power of two&nbsp;number of&nbsp;samples. Thus, the cepstrum that is displayed&nbsp;will typically be a little&nbsp;longer than the value specified&nbsp;here.</p>
+
+<p>&nbsp;</p>
+
+<h3>Minimum and Maximum IPI</h3>
+
+<p>Setting a&nbsp;minimum and maximum IPI delay will&nbsp;force the module&nbsp;to choose an IPI&nbsp;within this range when&nbsp;estimating&nbsp;IPI. These limits can be thought of as the starting and ending bins for the IPI Histogram, but&nbsp;they also apply to&nbsp;the&nbsp;&#39;peak&#39; IPI measured from the&nbsp;Ensemble Averaged Cepstrum.</p>
+
+<p>&nbsp;</p>
+
+<h3>Peak height %</h3>
+
+<p>The width of the cepstral peak from the ensemble average can be used as a measure of certainty&nbsp;of an ensemble&nbsp;averaged IPI measurement (i.e. narrow peaks&nbsp;in the ensemble average may be considered&nbsp;to have higher certainty&nbsp;than wider peaks). The value of <em>Peak height %</em> determines where on the peak the width will be measured. The default value of 75% (of the maximum)&nbsp;seems to give plausible results (see Miller et al J. Acoust. Soc. Am., 134, 2438&ndash;45).&nbsp;&nbsp;</p>
+
+<h2>Configuring the Click Detector for IPI calculation</h2>
+
+<p>The default settings&nbsp;in PAMGuard&#39;s Click Detector are usually suitable for detecting clicks&nbsp;most impulsive sounds, including sperm whales as well as&nbsp;everything&nbsp;from high-frequency, narrowband Harbor Porpoises to&nbsp;right whale &quot;Gunshots.&quot;&nbsp;However, the Click Detector&#39;s default duration of clicks is not typically&nbsp;suitable for the Sperm Whale IPI Plugin.&nbsp;This will need to be changed by selecting:&nbsp;</p>
+
+<p style="margin-left: 40px;">&nbsp;</p>
+
+<p style="margin-left: 40px;"><em>Settings-&gt; Click Detector -&gt; Detection Parameters -&gt; Click Length</em></p>
+
+<p>&nbsp;</p>
+
+<p>The IPI modules will work best if the sum of the pre and post samples, which we call nSamples,&nbsp;is at least&nbsp;the same number of samples as&nbsp;the maximum possible IPI. This can be calculated as:</p>
+
+<p style="margin-left: 40px;">&nbsp;</p>
+
+<p style="margin-left: 40px;"><em>nSamples</em> =&nbsp;<em>CepstrumDuration</em> / 1000 * sampleRate&nbsp;</p>
+
+<p style="margin-left: 40px;">&nbsp;</p>
+
+<p>Where&nbsp;<em>Cepstrum Duration</em>&nbsp;is the value that was entered into the IPI Settings measured in&nbsp;<strong>milliseconds</strong>, and sampleRate is measured in Hz. After calculating <em>nSamples, </em>set the following parameters&nbsp;under&nbsp;the tab <em>Click Length</em>:&nbsp;&nbsp;</p>
+
+<p style="margin-left: 40px;">&nbsp;</p>
+
+<p style="margin-left: 40px;"><em>Max Click Length:</em>&nbsp;at least <em>nSamples&nbsp;</em><em>&nbsp;</em></p>
+
+<p style="margin-left: 40px;"><em>Post sample: </em>set&nbsp;between 90-100% of<em>&nbsp;nSamples</em></p>
+
+<p style="margin-left: 40px;"><em>Pre sample</em>: set&nbsp;to the remainder of samples (0-10%&nbsp;of <em>nSamples) </em></p>
+
+<p style="margin-left: 40px;">&nbsp;</p>
+
+<p>As an&nbsp;example, if data were recorded at a sample rate of&nbsp;12 kHz,&nbsp;and&nbsp;<em>CepstrumDuration</em> was 40 ms, then <em>nSamples</em>&nbsp;will be&nbsp;480.&nbsp;We then set&nbsp;<em>Post samples </em>to&nbsp;450 and <em>Pre samples&nbsp;</em>to the remaining&nbsp;30&nbsp;samples. This will ensure that&nbsp;every single click detection will have at least&nbsp;480 samples (<em>nSamples</em>). Next we set <em>Max Click Length</em>&nbsp;to a value greater than&nbsp;or equal to 480.&nbsp;If&nbsp;the sample rate in our example had been 24 kHz&nbsp;or&nbsp;48 kHz, then we would double or quadruple&nbsp;these values.</p>
+
+<h2>Database logging and binary files</h2>
+
+<h3>IPI Histogram and Ensemble Averaged Cepstrum (database)</h3>
+
+<p>The IPI module will save IPI estimates from the ensemble averaged cepstrum and the IPI histogram to the PAMGuard database. The database table will have the same name as the IPI module.</p>
+
+<p>A new database row will be added each time PAMGuard&#39;s data acquisition is stopped&nbsp;(e.g. the pause button is pressed; the end of a&nbsp;file or set of merged files is reached). A new database row will also be added when the &quot;Save&quot; button in the IPI Side Panel is pressed.</p>
+
+<p>The IPI Histogram and Ensemble Averaged Cepstrum will be cleared each time PAMGuard&#39;s data acquisition is started (e.g. the start button is pressed; or a new, non-merged file is started).&nbsp;The IPI Histogram and Ensemble Average&nbsp;will also be cleared when the &quot;Clear&quot; button in the IPI&nbsp;Side Panel&nbsp;is pressed.&nbsp;</p>
+
+<p>&nbsp;</p>
+
+<h3>Individual click cepstra and IPIs</h3>
+
+<p>The cepstra of individual clicks can be saved as a PAMGuard Binary File if a Binary Store module is present.</p>
+
+<p>IPI binary files have no special header or footer information. The IPI binary object format is as follows:</p>
+
+<table border="1" cellpadding="1" cellspacing="1" style="width: 500px;">
+	<tbody>
+		<tr>
+			<th scope="column"><strong>Module Version</strong></th>
+			<th scope="column"><strong>Item</strong></th>
+			<th scope="column"><strong>Format</strong></th>
+			<th scope="column"><strong>Notes</strong></th>
+		</tr>
+		<tr>
+			<td>1</td>
+			<td>parentUID</td>
+			<td>int64</td>
+			<td>UID of parent click detection</td>
+		</tr>
+		<tr>
+			<td>1</td>
+			<td>IPI</td>
+			<td>float</td>
+			<td>IPI (peak of cepstrum) in milliseconds&nbsp;</td>
+		</tr>
+		<tr>
+			<td>1</td>
+			<td>ipiAmplitude</td>
+			<td>float</td>
+			<td>amplitude of cepstrum at time of IPI</td>
+		</tr>
+		<tr>
+			<td>1</td>
+			<td>sampleRate</td>
+			<td>float</td>
+			<td>the sample rate of the IPI</td>
+		</tr>
+		<tr>
+			<td>1</td>
+			<td>maxVal</td>
+			<td>float</td>
+			<td>maximum value of the cepstrum</td>
+		</tr>
+		<tr>
+			<td>1</td>
+			<td>length</td>
+			<td>int32</td>
+			<td>number of samples of the cepstrum</td>
+		</tr>
+		<tr>
+			<td>1</td>
+			<td>echoData</td>
+			<td>int16[]</td>
+			<td>Cepstrum of the click scaled by 32767/maxVal</td>
+		</tr>
+	</tbody>
+</table>
+
+<p>&nbsp;</p>
+
+<h2>Viewing ensemble IPI and IPI histogram</h2>
+
+<p>The IPI histogram and ensemble IPI can be viewed&nbsp;if you have a User&nbsp;Display with a Spectrogram.</p>
+
+<p>In the Settings of the spectrogram display, go to the panel called Plug ins, and check the box that says Sperm whale IPI computation.</p>
+
+<p>Now you will get a visual representation of the IPI plugin beneath the spectrogram.</p>
+
+<p><img src="display.png" /></p>
+
+<p>NB: neither the spectrogram, nor FFT engine is actually required for any of the IPI computations, -- it is just a container for viewing the results. However, the combined Spectrogram &amp; IPI&nbsp;display&nbsp;can beuseful for viewing sperm whale clicks when picking the appropriate click threshold.</p>
+
+<h2>Common Pitfalls</h2>
+
+<p>Common pitfalls&nbsp;when using the IPI module&nbsp;include:</p>
+
+<ul>
+	<li>Setting&nbsp;the Click Detector threshold too high/low;</li>
+	<li>Not having&nbsp;large&nbsp;enough values for pre/post/max samples&nbsp;in the click detector;</li>
+	<li>Selecting too many&nbsp;Source Channels (e.g. is it really sensible to consider two hydrophones 1 m apart on a towed array as independent?);</li>
+	<li>Including clicks that have exceeded the amplitude limits of&nbsp;some part of the recording chain (e.g. hydrophone, amplifier&nbsp;or analog-digital converter).&nbsp;Clipping of recorded data (from a saturated instrument) will cause nasty distortion artifacts in the cepstrum which is used to derive IPI.&nbsp;Where possible, recordings with clipped clicks should be excluded from the IPI module. &nbsp;&nbsp;</li>
+</ul>
+
+<h2>Other Tips and Tricks</h2>
+
+<ol>
+	<li>If you have recordings from a stereo/multi-hydrophone array (that is properly configured in Pamguard), you can use the <em>Angle Veto </em>in the <em>Click Detector</em> to filter out clicks from unwanted whales.</li>
+	<li>If you desire, you can also configure the <em>Click Detector </em>to&nbsp;exclude echoes. This can be achieved&nbsp;by:</li>
+</ol>
+
+<p style="margin-left: 80px;"><em>Settings -&gt; Click Detector -&gt;&nbsp;Detection Parameters -&gt; Echoes</em></p>
+
+<p style="margin-left: 40px;">and then&nbsp;checking the boxes to <em>Run Echo Detector online </em>and <em>Discard Echoes</em>. You will also&nbsp;need to determine for yourself&nbsp;a sensible value for the&nbsp;Max interval&nbsp;of echoes.&nbsp;</p>
+
+<p>Below is an example of a&nbsp;typical data model&nbsp;showing the IPI module and&nbsp;Click Detector. (NB: neither the spectrogram, nor FFT engine is actually required for any of the IPI computations, -- it is just a container for viewing the results).</p>
+
+<p>&nbsp;</p>
+
+<p>&nbsp;</p>
+
+<p><img src="dataModel.png" /></p>
+
+<p>&nbsp;</p>
+
+<h2>References</h2>
+
+<ul>
+	<li>Gordon, J. C. D. (1991). <em>Evaluation of a method for determining the length of sperm whales (Physeter catodon) from their vocalizations</em>, J. Zool., 224, 301&ndash;314. doi:10.1111/j.1469-7998.1991.tb04807.x</li>
+	<li>Growcott, A., Miller, B. S., Sirguey, P., Slooten, E., and Dawson, S. M. (2011). <em>Measuring body length of male sperm whales from their clicks: the relationship between inter-pulse intervals and photogrammetrically measured lengths,</em> J. Acoust. Soc. Am., 130, 568&ndash;73. doi:10.1121/1.3578455</li>
+	<li>Miller, B. S., Growcott, A., Slooten, E., and Dawson, S. M. (2013). <em>Acoustically derived growth rates of sperm whales (Physeter macrocephalus) in Kaikoura, New Zealand</em>, J. Acoust. Soc. Am., 134, 2438&ndash;45. doi:10.1121/1.4816564</li>
+	<li>Teloni, V., Zimmer, W. M. X., Wahlberg, M., and Madsen, P. T. (2007). <em>Consistent acoustic size estimation of sperm whales using clicks recorded from unknown aspects</em>, J. Cetacean Res. Manag., 9, 127&ndash;136.</li>
+</ul>
+</body>
+</html>
