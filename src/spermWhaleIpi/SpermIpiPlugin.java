@@ -52,7 +52,7 @@ public class SpermIpiPlugin implements PamPluginInterface {
 
 	@Override
 	public String getClassName() {
-		return "spermWhaleIpi.IpiController";
+		return IpiController.class.getName();
 	}
 
 	@Override
@@ -117,12 +117,12 @@ public class SpermIpiPlugin implements PamPluginInterface {
 
 	@Override
 	public String getVersion() {
-		return "2018.05.09";
+		return "2023.12.01";
 	}
 
 	@Override
 	public String getPamVerDevelopedOn() {
-		return "2.00.12f";
+		return "2.02.09";
 	}
 
 	@Override
